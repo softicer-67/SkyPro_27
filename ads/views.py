@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
-from django.db.models import Count, Q
 from django.http import JsonResponse
-from rest_framework.generics import *
+from rest_framework.generics import ListAPIView
+
 from ads.serializers import *
 from rest_framework.viewsets import ModelViewSet
 
@@ -18,6 +18,11 @@ class LocationViewSet(ModelViewSet):
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class AdListView(ListAPIView):
@@ -42,64 +47,7 @@ class AdListView(ListAPIView):
         price_to = request.GET.get('price_to', 100000)
         if price_from or price_to:
             self.queryset = self.queryset.filter(
-                price__range=[price_from,price_to])
+                price__range=[price_from, price_to])
 
         return super().get(request, *args, **kwargs)
-
-
-class AdDetailView(RetrieveAPIView):
-    queryset = Ad.objects.all()
-    serializer_class = AdSerializer
-
-
-class AdCreateView(CreateAPIView):
-    queryset = Ad.objects.all()
-    serializer_class = AdSerializer
-
-
-class AdUpdateView(UpdateAPIView):
-    queryset = Ad.objects.all()
-    serializer_class = AdSerializer
-
-
-class AdDeleteView(DestroyAPIView):
-    queryset = Ad.objects.all()
-    serializer_class = AdSerializer
-
-
-class AdImageView(UpdateAPIView):
-    queryset = Ad.objects.all()
-    serializer_class = AdUpdateImageSerializer
-
-
-class UserListView(ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserListSerializer
-
-
-class UserCreateView(CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserCreateSerializer
-
-
-class UserUpdateView(UpdateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserUpdateSerializer
-
-
-class UserDetailView(RetrieveAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserListSerializer
-
-
-class UserAdDetailView(ListAPIView):
-    queryset = User.objects.annotate(total_ads=Count('ad', filter=Q(ad__is_published=True)))
-    serializer_class = UserAdSerializer
-
-
-class UserDeleteView(DestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserListSerializer
-
-    # filterset_fields = ['category', 'name', 'price']
 

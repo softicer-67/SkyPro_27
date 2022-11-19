@@ -1,33 +1,21 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
-from ads import views
+from django.urls import path, include
 from rest_framework import routers
-from ads.views import LocationViewSet, CategoryViewSet
+from ads import views
+from ads.views import LocationViewSet, CategoryViewSet, UserViewSet
 
 
-router = routers.SimpleRouter()
-router.register('location', LocationViewSet)
-router.register('cat', CategoryViewSet)
+router = routers.DefaultRouter()
+router.register(r'location', LocationViewSet)
+router.register(r'cat', CategoryViewSet)
+router.register(r'user', UserViewSet)
 
 
 urlpatterns = [
     path("", views.index),
-
     path('ad/', views.AdListView.as_view()),
-    path('ad/create/', views.AdCreateView.as_view()),
-    path('ad/<int:pk>/image/', views.AdImageView.as_view()),
-    path('ad/<int:pk>', views.AdDetailView.as_view()),
-    path('ad/<int:pk>/update/', views.AdUpdateView.as_view()),
-    path('ad/<int:pk>/delete/', views.AdDeleteView.as_view()),
-
-    path('user/', views.UserListView.as_view()),
-    path('user/Z/', views.UserAdDetailView.as_view()),
-    path('user/create/', views.UserCreateView.as_view()),
-    path('user/<int:pk>', views.UserDetailView.as_view()),
-    path('user/<int:pk>/update/', views.UserUpdateView.as_view()),
-    path('user/<int:pk>/delete/', views.UserDeleteView.as_view()),
-
+    path("", include(router.urls))
 ]
 
 urlpatterns += router.urls
