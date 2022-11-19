@@ -3,9 +3,6 @@ from .models import *
 
 
 class AdSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(read_only=True, slug_field='id')
-    category = serializers.SlugRelatedField(read_only=True, slug_field='id')
-
     class Meta:
         model = Ad
         fields = '__all__'
