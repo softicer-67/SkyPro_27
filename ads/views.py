@@ -31,7 +31,7 @@ class AdListView(ListAPIView):
 
         ad_name = request.GET.get('text')
         if ad_name:
-          self.queryset = self.queryset.filter(name__icontains=ad_name)
+            self.queryset = self.queryset.filter(name__icontains=ad_name)
 
         ad_city = request.GET.get('location')
         if ad_city:
