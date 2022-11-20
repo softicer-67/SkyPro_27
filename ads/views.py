@@ -1,5 +1,6 @@
 # -*- coding: utf8 -*-
 from django.http import JsonResponse
+from rest_framework import request
 from rest_framework.generics import ListAPIView
 
 from ads.serializers import *
@@ -25,6 +26,11 @@ class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
 
 
+class AdViewSet(ModelViewSet):
+    # queryset = Ad.objects.all()
+    serializer_class = AdSerializer
+
+
 class AdListView(ListAPIView):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
@@ -40,14 +46,12 @@ class AdListView(ListAPIView):
 
         ad_city = request.GET.get('location')
         if ad_city:
-            self.queryset = self.queryset.filter(
-                author__location__name__icontains=ad_city)
+            self.queryset = self.queryset.filter(author__location__name__icontains=ad_city)
 
         price_from = request.GET.get('price_from', 0)
         price_to = request.GET.get('price_to', 100000)
         if price_from or price_to:
-            self.queryset = self.queryset.filter(
-                price__range=[price_from, price_to])
+            self.queryset = self.queryset.filter(price__range=[price_from, price_to])
 
         return super().get(request, *args, **kwargs)
 

@@ -55,7 +55,7 @@ class Ad(models.Model):
     price = models.DecimalField('Цена', max_digits=10, decimal_places=0)
     description = models.TextField('Описание', max_length=2000, blank=True)
     image = models.ImageField('Фото', upload_to='images/', null=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     is_published = models.BooleanField('Опубликовано')
 
     class Meta:
