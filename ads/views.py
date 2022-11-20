@@ -27,7 +27,7 @@ class UserViewSet(ModelViewSet):
 
 
 class AdViewSet(ModelViewSet):
-    # queryset = Ad.objects.all()
+    queryset = Ad.objects.all()
     serializer_class = AdSerializer
 
 
