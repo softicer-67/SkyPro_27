@@ -9,7 +9,7 @@ router = routers.SimpleRouter()
 router.register(r'location', LocationViewSet)
 router.register(r'cat', CategoryViewSet)
 router.register(r'user', UserViewSet)
-# router.register(r'ad', AdViewSet)
+router.register(r'ad', AdViewSet)
 
 
 urlpatterns = [
