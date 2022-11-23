@@ -2,12 +2,6 @@ from rest_framework import serializers
 from .models import *
 
 
-class AdSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ad
-        fields = '__all__'
-
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -25,3 +19,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+
+class AdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ad
+        fields = '__all__'

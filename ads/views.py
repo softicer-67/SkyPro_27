@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 from django.http import JsonResponse
-from rest_framework import request
-from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
 
 from ads.serializers import *
 from rest_framework.viewsets import ModelViewSet
@@ -30,12 +29,7 @@ class AdViewSet(ModelViewSet):
     queryset = Ad.objects.all()
     serializer_class = AdSerializer
 
-
-class AdListView(ListAPIView):
-    queryset = Ad.objects.all()
-    serializer_class = AdSerializer
-
-    def get(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs):
         ad_cat = request.GET.get('cat')
         if ad_cat:
             self.queryset = self.queryset.filter(category__id__in=ad_cat)
@@ -53,5 +47,5 @@ class AdListView(ListAPIView):
         if price_from or price_to:
             self.queryset = self.queryset.filter(price__range=[price_from, price_to])
 
-        return super().get(request, *args, **kwargs)
-
+        serial = self.get_serializer(self.queryset, many=True)
+        return Response(serial.data)
