@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import rest_framework
 from django.http import JsonResponse
 from rest_framework.response import Response
 
@@ -30,6 +31,7 @@ class AdViewSet(ModelViewSet):
     serializer_class = AdSerializer
 
     def list(self, request, *args, **kwargs):
+
         ad_cat = request.GET.get('cat')
         if ad_cat:
             self.queryset = self.queryset.filter(category__id__in=ad_cat)
@@ -46,6 +48,12 @@ class AdViewSet(ModelViewSet):
         price_to = request.GET.get('price_to', 100000)
         if price_from or price_to:
             self.queryset = self.queryset.filter(price__range=[price_from, price_to])
+
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
 
         serial = self.get_serializer(self.queryset, many=True)
         return Response(serial.data)
